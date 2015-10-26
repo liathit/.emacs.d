@@ -1,0 +1,134 @@
+* Load directory
+** Matrix
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+* Theme
+** Cyberpunk theme
+#+BEGIN_SRC emacs-lisp
+(use-package cyberpunk-theme
+  :ensure t
+  :init
+  (progn
+    (load-theme 'cyberpunk t)
+    (set-face-attribute `mode-line nil
+                        :box nil)
+    (set-face-attribute `mode-line-inactive nil
+                        :box nil)))
+#+END_SRC
+
+** Solarized theme
+#+BEGIN_SRC emacs-lisp
+(use-package solarized-theme
+  :init
+  (setq solarized-use-variable-pitch nil)
+  :ensure t)
+#+END_SRC
+   
+* Font 
+#+BEGIN_SRC emacs-lisp
+(setenv "LANG" "ru_RU.UTF-8")
+(set-default-font "Source Code Pro 10")
+(set-fontset-font t 'unicode "Symbola" nil 'prepend)
+#+END_SRC
+* General settings
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode -1)
+(global-linum-mode)
+(setq linum-format "%2d")
+(show-paren-mode 1)
+(set-default 'cursor-type 'hbar)
+(iswitchb-mode 1)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Scratch message
+(setq initial-scratch-message
+  (concat "\nHello Liathit. Today is: "
+    (format-time-string "%A %d %B %Y at %T\n")))
+#+END_SRC
+** Winner mode
+#+BEGIN_SRC emacs-lisp
+(winner-mode t)
+#+END_SRC
+
+** Windmove
+#+BEGIN_SRC emacs-lisp
+(use-package windmove
+  :defer t
+  :bind
+  (("<f2> <right>" . windmove-right)
+   ("<f2> <left>" . windmove-left)
+   ("<f2> <up>" . windmove-up)
+   ("<f2> <down>" . windmove-down)
+   ))
+#+END_SRC  
+* ELPA packages
+** nyan mode
+#+BEGIN_SRC emacs-lisp
+    (use-package nyan-mode
+      :ensure t
+      :if window-system
+      :init
+      (nyan-mode 1))
+#+END_SRC
+** avy
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+   :ensure t
+   :bind ("C-c SPC" . avy-goto-word-1))
+#+END_SRC
+** smex
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t
+    :bind ("M-x" . smex))
+#+END_SRC
+** ido-vertical-mode
+#+BEGIN_SRC emacs-lisp
+(use-package ido-vertical-mode
+   :ensure t
+   :config
+   (progn (require 'ido-vertical-mode)
+   (ido-vertical-mode 1)))
+#+END_SRC
+** auto-complete
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :diminish auto-complete-mode
+    :config
+    (ac-config-default))
+#+END_SRC
+** which key
+ #+BEGIN_SRC emacs-lisp
+   (use-package which-key
+     :ensure t
+     :init
+     (which-key-mode))
+ #+END_SRC
+** projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :bind ("C-c f" . projectile-find-file)
+   )
+#+END_SRC
+* Programming
+** python
+#+BEGIN_SRC emacs-lisp
+  (use-package jedi
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (setq jedi:complete-on-dot t))
+#+END_SRC
+** virtualenvwrapper
+#+BEGIN_SRC emacs-lisp
+    (use-package virtualenvwrapper
+      :ensure t
+      :config
+      (require 'virtualenvwrapper)
+      (venv-initialize-interactive-shells)
+      (venv-initialize-eshell))
+#+END_SRC

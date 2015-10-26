@@ -1,0 +1,9 @@
+.cask
+eshell/
+elpa/
+auto-save-list/
+url/
+ac-comphist.dat
+ac-dict/
+/smex-items
+/tramp
