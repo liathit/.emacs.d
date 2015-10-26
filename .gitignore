@@ -7,3 +7,5 @@ ac-comphist.dat
 ac-dict/
 /smex-items
 /tramp
+config.el
+.python-environments/
