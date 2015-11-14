@@ -1,82 +1,78 @@
-* Theme
-** Cyberpunk theme
+* Customize settings
 #+BEGIN_SRC emacs-lisp
-(use-package cyberpunk-theme
-  :ensure t
-  :init
-  (progn
-    (load-theme 'cyberpunk t)
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
 #+END_SRC
+* Theme
 ** Solarized theme
 #+BEGIN_SRC emacs-lisp
-(use-package solarized-theme
-  :init
-  (setq solarized-use-variable-pitch nil)
-  :ensure t)
+  (use-package solarized-theme
+    :init
+    (setq solarized-use-variable-pitch nil)
+    (progn (load-theme 'solarized-dark t)
+    :ensure t))
 #+END_SRC
-   
 * Font 
 #+BEGIN_SRC emacs-lisp
 (set-default-font "Source Code Pro 10")
-(set-fontset-font t 'unicode "Symbola" nil 'prepend)
 #+END_SRC
 * Sane defaults
 #+BEGIN_SRC emacs-lisp
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-;; UTF-8 please
-(setq locale-coding-system 'utf-8) ; pretty
-(set-terminal-coding-system 'utf-8) ; pretty
-(set-keyboard-coding-system 'utf-8) ; pretty
-(set-selection-coding-system 'utf-8) ; please
-(prefer-coding-system 'utf-8) ; with sugar on top
-(setq-default indent-tabs-mode nil)
+  ;; UTF-8 please
+  (setq locale-coding-system 'utf-8) ; pretty
+  (set-terminal-coding-system 'utf-8) ; pretty
+  (set-keyboard-coding-system 'utf-8) ; pretty
+  (set-selection-coding-system 'utf-8) ; please
+  (prefer-coding-system 'utf-8) ; with sugar on top
+  (setq-default indent-tabs-mode nil)
 
-(blink-cursor-mode -1)
-(global-linum-mode)
-(setq linum-format "%2d")
-(show-paren-mode 1)
-(set-default 'cursor-type 'hbar)
-(iswitchb-mode 1)
+  (blink-cursor-mode -1)
+  (global-linum-mode)
+  (setq linum-format "%2d")
+  (show-paren-mode 1)
+  (set-default 'cursor-type 'hbar)
+  (iswitchb-mode 1)
 
-(fset 'yes-or-no-p 'y-or-n-p)
+  (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Scratch message
-(setq initial-scratch-message
-  (concat "\nHello Liathit. Today is: "
-    (format-time-string "%A %d %B %Y at %T\n")))
+  ;; Scratch message
+  (setq initial-scratch-message
+    (concat "\nHello Liathit. Today is: "
+      (format-time-string "%A %d %B %Y at %T\n")))
 
-;; Winner mode
-(winner-mode t)
+  ;; Winner mode
+  (winner-mode t)
 
-;; Windmove
-(use-package windmove
-  :defer t
-  :bind
-  (("<f2> <right>" . windmove-right)
-   ("<f2> <left>" . windmove-left)
-   ("<f2> <up>" . windmove-up)
-   ("<f2> <down>" . windmove-down)
-   ))
+  ;; Windmove
+  (use-package windmove
+    :defer t
+    :bind
+    (("<f2> <right>" . windmove-right)
+     ("<f2> <left>" . windmove-left)
+     ("<f2> <up>" . windmove-up)
+     ("<f2> <down>" . windmove-down)
+     ))
+
+  ;; Disable linum-mode in eshell
+  (add-hook 'eshell-mode-hook (lambda () (linum-mode -1)))
 #+END_SRC
 * ELPA packages
-** smoothscrolling
-#+BEGIN_SRC emacs-lisp
-  (use-package smooth-scrolling
-    :ensure t)
-#+END_SRC
 ** nyan mode
 #+BEGIN_SRC emacs-lisp
-    (use-package nyan-mode
-      :ensure t
-      :if window-system
-      :init
-      (nyan-mode 1))
+  (use-package nyan-mode
+    :ensure t
+    :disabled t
+    :if window-system
+    :init
+    (nyan-mode 1))
+#+END_SRC
+** powerline
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :ensure t)
 #+END_SRC
 ** avy
 #+BEGIN_SRC emacs-lisp
