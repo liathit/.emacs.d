@@ -1,17 +1,51 @@
+* Encrypt
+#+BEGIN_SRC emacs-lisp
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key nil)
+#+END_SRC
 * Customize settings
 #+BEGIN_SRC emacs-lisp
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 #+END_SRC
 * Themes
+** gruvbox
+#+BEGIN_SRC emacs-lisp
+  (use-package gruvbox-theme
+    :ensure t
+    :init
+    (load-theme 'gruvbox t))
+#+END_SRC
 ** zenburn
 #+BEGIN_SRC emacs-lisp 
   (use-package zenburn-theme
-    :ensure t)
+    :ensure t
+    :disabled t)
 #+END_SRC
 * Font 
 #+BEGIN_SRC emacs-lisp
-(set-default-font "Source Code Pro 10")
+;;(set-default-font "Source Code Pro 10")
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-10"))
+#+END_SRC
+* Org Mode
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files '("~/org"))
+  (setq org-mobile-directory "/scp:liathit@127.0.0.1:MobileOrg")
+  (setq org-mobile-inbox-for-pull (concat org-directory "/index.org"))
+  (setq org-mobile-force-id-on-agenda-items nil)
+
+  (use-package org-alert
+    :ensure t
+    :init
+    (require 'org-alert)
+    (org-alert-enable)
+    (setq alert-default-style 'libnotify))
+
+    (global-set-key (kbd "<f12>") 'org-agenda)
 #+END_SRC
 * Sane defaults
 #+BEGIN_SRC emacs-lisp
@@ -48,8 +82,28 @@
   ;; Disable linum-mode in eshell
   (add-hook 'eshell-mode-hook (lambda () (linum-mode -1)))
 #+END_SRC
+* Tramp
+#+BEGIN_SRC emacs-lisp
+  (require 'tramp)
+  (add-to-list 'tramp-default-proxies-alist
+               '(nil "\\`root\\'" "/ssh:%h:"))
+  (add-to-list 'tramp-default-proxies-alist
+               '((regexp-quote (system-name)) nil nil))
+#+END_SRC
 * ELPA packages
+** org-bullets
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+  :ensure t
+  :init
+  (setq org-bullets-bullet-list
+  '("◉" "◎" "⚫" "○" "►" "◇"))
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
 ** nyan mode
+** TODO 
+** TODO 
 #+BEGIN_SRC emacs-lisp
   (use-package nyan-mode
     :ensure t
@@ -58,27 +112,38 @@
     :init
     (nyan-mode 1))
 #+END_SRC
+** paredit
+ #+BEGIN_SRC emacs-lisp
+   (use-package paredit
+     :ensure t)
+ #+END_SRC
 ** powerline
 #+BEGIN_SRC emacs-lisp
   (use-package powerline
-    :ensure t)
-#+END_SRC
-** avy
-#+BEGIN_SRC emacs-lisp
-(use-package avy
-   :ensure t
-   :bind ("C-c SPC" . avy-goto-word-1))
-#+END_SRC
-** smex
-#+BEGIN_SRC emacs-lisp
-  (use-package smex
+    :diminish paredit-mode
     :ensure t
-    :bind ("M-x" . smex))
+    :init
+    (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+    (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+    (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+    (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+    (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+    (add-hook 'json-mode-hook 'enable-paredit-mode))
+#+END_SRC
+** swiper
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    :bind (("\C-s" . swiper)))
 #+END_SRC
 ** ido-vertical-mode
 #+BEGIN_SRC emacs-lisp
 (use-package ido-vertical-mode
    :ensure t
+   :disabled t
    :config
    (progn (require 'ido-vertical-mode)
    (ido-vertical-mode 1)))
@@ -95,7 +160,7 @@
  #+BEGIN_SRC emacs-lisp
    (use-package which-key
      :ensure t
-     :init
+     :config
      (which-key-mode))
  #+END_SRC
 ** projectile
@@ -122,4 +187,8 @@
       (require 'virtualenvwrapper)
       (venv-initialize-interactive-shells)
       (venv-initialize-eshell))
+#+END_SR
+** clojure
+#+BEGIN_SRC emacs-lisp
+  (use-package cider-mode)
 #+END_SRC
