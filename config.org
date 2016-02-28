@@ -94,24 +94,15 @@
 ** org-bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-  :ensure t
-  :init
-  (setq org-bullets-bullet-list
-  '("◉" "◎" "⚫" "○" "►" "◇"))
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+END_SRC
-** nyan mode
-** TODO 
-** TODO 
-#+BEGIN_SRC emacs-lisp
-  (use-package nyan-mode
     :ensure t
     :disabled t
-    :if window-system
     :init
-    (nyan-mode 1))
+    (setq org-bullets-bullet-list
+          '("◉" "◎" "⚫" "○" "►" "◇"))
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
+** nyan mode
 ** paredit
  #+BEGIN_SRC emacs-lisp
    (use-package paredit
@@ -170,6 +161,57 @@
     :bind ("C-c f" . projectile-find-file)
    )
 #+END_SRC
+** helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :ensure t
+    :diminish helm-mode
+    :init
+    (progn
+      (require 'helm-config)
+      (setq helm-candidate-number-limit 100)
+      ;; From https://gist.github.com/antifuchs/9238468
+      (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+            helm-input-idle-delay 0.01  ; this actually updates things
+                                          ; reeeelatively quickly.
+            helm-yas-display-key-on-candidate t
+            helm-quick-update t
+            helm-M-x-requires-pattern nil
+            helm-ff-skip-boring-files t)
+      (helm-mode))
+    :bind (("C-c h" . helm-mini)
+           ("C-h a" . helm-apropos)
+           ("C-x C-b" . helm-buffers-list)
+           ("C-x b" . helm-buffers-list)
+           ("M-y" . helm-show-kill-ring)
+           ("M-x" . helm-M-x)
+           ("C-x c o" . helm-occur)
+           ("C-x c s" . helm-swoop)
+           ("C-x c y" . helm-yas-complete)
+           ("C-x c Y" . helm-yas-create-snippet-on-region)
+           ("C-x c b" . my/helm-do-grep-book-notes)
+           ("C-x c SPC" . helm-all-mark-rings)))
+  (ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
+#+END_SRC
+** helm-swoop
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-swoop
+   :ensure t
+   :bind
+   (("C-S-s" . helm-swoop)
+    ("M-i" . helm-swoop)
+    ("M-s s" . helm-swoop)
+    ("M-s M-s" . helm-swoop)
+    ("M-I" . helm-swoop-back-to-last-point)
+    ("C-c M-i" . helm-multi-swoop)
+    ("C-x M-i" . helm-multi-swoop-all)
+    )
+   :config
+   (progn
+     (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+     (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
+  )
+#+END_SRC
 * Programming
 ** python
 #+BEGIN_SRC emacs-lisp
@@ -178,6 +220,17 @@
     :config
     (add-hook 'python-mode-hook 'jedi:setup)
     (setq jedi:complete-on-dot t))
+#+END_SRC
+** clojure-cider
+#+BEGIN_SRC emacs-lisp
+  (use-package cider
+    :ensure t)
+#+END_SRC
+** clojure-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package clojure-mode
+    :ensure t
+    :init)
 #+END_SRC
 ** virtualenvwrapper
 #+BEGIN_SRC emacs-lisp
@@ -188,7 +241,3 @@
       (venv-initialize-interactive-shells)
       (venv-initialize-eshell))
 #+END_SR
-** clojure
-#+BEGIN_SRC emacs-lisp
-  (use-package cider-mode)
-#+END_SRC
