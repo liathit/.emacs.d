@@ -23,3 +23,4 @@
 (org-babel-load-file (concat user-emacs-directory "config.org"))
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'set-goal-column 'disabled nil)

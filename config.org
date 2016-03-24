@@ -13,10 +13,26 @@
 (load custom-file)
 #+END_SRC
 * Themes
+** jbeans-theme
+#+BEGIN_SRC emacs-lisp
+  (use-package jbeans-theme
+    :ensure t
+    :init
+    (load-theme 'jbeans t))
+#+END_SRC
+** borland-blue 
+#+BEGIN_SRC emacs-lisp
+  (use-package borland-blue-theme
+    :ensure t
+    :disabled t
+    :init
+    (load-theme 'borland-blue t))
+#+END_SRC
 ** gruvbox
 #+BEGIN_SRC emacs-lisp
   (use-package gruvbox-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'gruvbox t))
 #+END_SRC
@@ -29,15 +45,13 @@
 * Font 
 #+BEGIN_SRC emacs-lisp
 ;;(set-default-font "Source Code Pro 10")
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-10"))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-11"))
+(set-fontset-font t 'unicode "Symbola" nil 'prepend)
 #+END_SRC
 * Org Mode
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files '("~/org"))
-  (setq org-mobile-directory "/scp:liathit@127.0.0.1:MobileOrg")
-  (setq org-mobile-inbox-for-pull (concat org-directory "/index.org"))
-  (setq org-mobile-force-id-on-agenda-items nil)
-
+  
   (use-package org-alert
     :ensure t
     :init
@@ -158,8 +172,18 @@
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
-    :bind ("C-c f" . projectile-find-file)
-   )
+    :bind (("C-c f" . helm-projectile-find-file)
+           ("C-c pp" . helm-projectile-switch-project)
+           ("C-c psg" . helm-projectile-grep)))
+#+END_SRC
+** helm-projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-projectile
+    :ensure t
+    :init
+    (projectile-global-mode)
+    (setq projectile-switch-project-action 'helm-projectile-find-file)
+    (helm-projectile-on))
 #+END_SRC
 ** helm
 #+BEGIN_SRC emacs-lisp
@@ -221,6 +245,12 @@
     (add-hook 'python-mode-hook 'jedi:setup)
     (setq jedi:complete-on-dot t))
 #+END_SRC
+** ac-cider
+#+BEGIN_SRC emacs-lisp
+  (use-package ac-cider
+    :ensure t
+    :mode)
+#+END_SRC
 ** clojure-cider
 #+BEGIN_SRC emacs-lisp
   (use-package cider
@@ -228,9 +258,10 @@
 #+END_SRC
 ** clojure-mode
 #+BEGIN_SRC emacs-lisp
-  (use-package clojure-mode
-    :ensure t
-    :init)
+    (use-package clojure-mode
+      :ensure t
+      :init
+      :bind (("C-." . cider-repl-clear-buffer)))
 #+END_SRC
 ** virtualenvwrapper
 #+BEGIN_SRC emacs-lisp
