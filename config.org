@@ -3,6 +3,10 @@
   (set-register ?o (cons 'file "~/org/notes.org"))
   (set-register ?c (cons 'file "~/.emacs.d/config.org"))
 #+END_SRC
+* Themes
+#+BEGIN_SRC emacs-lisp
+(load-theme 'deeper-blue)
+#+END_SRC
 * Encrypt
 #+BEGIN_SRC emacs-lisp
   (require 'org-crypt)
@@ -17,41 +21,10 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 #+END_SRC
-* Themes
-** jbeans-theme
-#+BEGIN_SRC emacs-lisp
-  (use-package jbeans-theme
-    :ensure t
-    :init
-    (load-theme 'jbeans t))
-#+END_SRC
-** borland-blue 
-#+BEGIN_SRC emacs-lisp
-  (use-package borland-blue-theme
-    :ensure t
-    :disabled t
-    :init
-    (load-theme 'borland-blue t))
-#+END_SRC
-** gruvbox
-#+BEGIN_SRC emacs-lisp
-  (use-package gruvbox-theme
-    :ensure t
-    :disabled t
-    :init
-    (load-theme 'gruvbox t))
-#+END_SRC
-** zenburn
-#+BEGIN_SRC emacs-lisp 
-  (use-package zenburn-theme
-    :ensure t
-    :disabled t)
-#+END_SRC
 * Font 
 #+BEGIN_SRC emacs-lisp
 ;;(set-default-font "Source Code Pro 10")
 (add-to-list 'default-frame-alist '(font . "Source Code Pro-11"))
-(set-fontset-font t 'unicode "Symbola" nil 'prepend)
 #+END_SRC
 * Org Mode
 #+BEGIN_SRC emacs-lisp  
@@ -77,7 +50,7 @@
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
   (blink-cursor-mode -1)
-  (global-linum-mode)
+;;(global-linum-mode)
   (setq linum-format "%2d")
   (show-paren-mode 1)
   (set-default 'cursor-type 'hbar)
@@ -115,12 +88,21 @@
                '((regexp-quote (system-name)) nil nil))
 #+END_SRC
 * ELPA packages
-** perspective
+** magit
 #+BEGIN_SRC emacs-lisp
-  (use-package perspective
-    :ensure t
-    :init
-    (persp-mode))
+  (use-package magit
+    :ensure t)
+#+END_SRC
+** emoji
+#+BEGIN_SRC emacs-lisp
+  (use-package emoji-cheat-sheet-plus
+      :defer t
+      :init
+      (progn
+        ;; enabled emoji in buffer
+        (add-hook 'org-mode-hook 'emoji-cheat-sheet-plus-display-mode)
+        ;; insert emoji with helm
+        (global-set-key (kbd "C-c C-e") 'emoji-cheat-sheet-plus-insert)))
 #+END_SRC
 ** org-bullets
 #+BEGIN_SRC emacs-lisp
@@ -133,25 +115,11 @@
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+END_SRC
-** nyan mode
 ** paredit
  #+BEGIN_SRC emacs-lisp
    (use-package paredit
      :ensure t)
  #+END_SRC
-** powerline
-#+BEGIN_SRC emacs-lisp
-  (use-package powerline
-    :diminish paredit-mode
-    :ensure t
-    :init
-    (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-    (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-    (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-    (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-    (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-    (add-hook 'json-mode-hook 'enable-paredit-mode))
-#+END_SRC
 ** swiper
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
